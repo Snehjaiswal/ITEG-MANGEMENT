@@ -1,5 +1,4 @@
-# new_structure
+# ITEG-MANAGEMENT
 
-Iteg management 
+It's college project
 
-I am beginner 
