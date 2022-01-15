@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const uuid = require("uuid").v4
 const sendMail = require('./sendEmail')
 
+const uniqueID = uuid()
 
 const { CLIENT_URL } = process.env
 class Login {
@@ -13,9 +14,8 @@ class Login {
     // student signup information
     async signup(req, res) {
         try {
-            const { name, email, password, cpassword } = req.body
+            const {uniqueID, name, email, password, cpassword } = req.body
 
-            const uniqueID = uuid()
             if (!name || !email || !password || !cpassword)
                 return res.status(400).json({ msg: "Please fill in all fields." })
 
@@ -39,7 +39,7 @@ class Login {
             console.log(newUser);
             const activation_token = createActivationToken(newUser)
 
-            const url = `${CLIENT_URL}/user/activate/${activation_token}`
+            const url = `${CLIENT_URL}/api/activate/${activation_token}`
             sendMail(email, url, "Verify your email address")
 
 
@@ -122,7 +122,7 @@ class Login {
             if (!user) return res.status(400).json({ msg: "This email does not exist." })
 
             const access_token = createAccessToken({ id: user._id })
-            const url = ` ${CLIENT_URL}/user/reset/${access_token}`
+            const url = ` ${CLIENT_URL}/api/reset/${access_token}`
             console.log(url);
             sendMail(email, url, "Reset your password")
             res.json({ msg: "Re-send the password, please check your email." })
