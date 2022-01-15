@@ -3,6 +3,7 @@ const {AUTH_EMAIL, AUTH_PASS  } = require("../../config")
 
 // otp send
 const nodemailer = require('nodemailer')
+const { getMaxListeners } = require("../models/Login.model")
 
 const sendEmail = (to, url, txt) => {
 let transporter = nodemailer.createTransport({
@@ -14,7 +15,7 @@ let transporter = nodemailer.createTransport({
 })
 
 const mailOptions = {
-    from: process.env.AUTH_EMAIL,
+    from: 'kalalsneh@gmail.com',
     to: to,
     subject: "email verification",
     html: `

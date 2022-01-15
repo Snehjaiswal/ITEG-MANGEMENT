@@ -8,10 +8,6 @@ const { port } = require("./config")
 
 app.use(express.json())
 
-app.use('/api/login',require('./app/routes/Std_Login.route'))
+app.use('/user/login',require('./app/routes/Login.route'))
 
-// sneh
-// sneh jaiswal
 app.listen(port, () => console.log(`Server is running on http://127.0.0.1:${port}`))
-
-// i am change the port number
