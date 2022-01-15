@@ -32,8 +32,7 @@ const std_LoginSchema = Schema({
     date: {
         type: Date,
         default:Date.now
-    },
-    varified  : Boolean , 
+    }
 
 
 })
