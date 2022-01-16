@@ -4,15 +4,15 @@ const LoginModel = require('../models/Login.model')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const uuid = require("uuid").v4
-const sendMail = require('./sendEmail')
+const sendMail = require('../controllers/sendEmail')
 
-const uniqueID = uuid()
 
 const { CLIENT_URL } = process.env
 class Login {
-
+    
     // student signup information
     async signup(req, res) {
+        const uniqueID = uuid()
         try {
             const {uniqueID, name, email, password, cpassword } = req.body
 

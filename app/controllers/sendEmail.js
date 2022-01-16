@@ -1,3 +1,4 @@
+
 "use strict"
 const {AUTH_EMAIL, AUTH_PASS  } = require("../../config")
 
@@ -15,8 +16,8 @@ let transporter = nodemailer.createTransport({
 })
 
 const mailOptions = {
-    from: 'kalalsneh@gmail.com',
-    to: to,
+    from: process.env.AUTH_EMAIL,
+    to:" kalalsneh@gmail.com",
     subject: "email verification",
     html: `
    

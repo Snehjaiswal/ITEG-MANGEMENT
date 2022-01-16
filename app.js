@@ -8,8 +8,8 @@ const { port } = require("./config")
 
 app.use(express.json())
 
-app.use('/api/Reg',require('./app/routes/Student_Reg.route'))
 app.use('/api/login',require('./app/routes/Login.route'))
+app.use('/api/Reg',require('./app/routes/Student_Reg.route'))
 
 
 
