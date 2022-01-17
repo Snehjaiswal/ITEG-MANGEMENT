@@ -16,8 +16,8 @@ let transporter = nodemailer.createTransport({
 })
 
 const mailOptions = {
-    from: process.env.AUTH_EMAIL,
-    to:" kalalsneh@gmail.com",
+    from:"kalalsneh@gmail.com" ,
+    to:" hwksneh@gmail.com",
     subject: "email verification",
     html: `
    

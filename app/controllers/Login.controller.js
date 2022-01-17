@@ -10,11 +10,11 @@ const sendMail = require('../controllers/sendEmail')
 const { CLIENT_URL } = process.env
 class Login {
     
-    // student signup information
+//     // student signup information
     async signup(req, res) {
         const uniqueID = uuid()
         try {
-            const {uniqueID, name, email, password, cpassword } = req.body
+            const { name, email, password, cpassword } = req.body
 
             if (!name || !email || !password || !cpassword)
                 return res.status(400).json({ msg: "Please fill in all fields." })
@@ -32,12 +32,13 @@ class Login {
             const cpasswordHash = await bcrypt.hash(cpassword, 12)
 
 
-            const newUser = {
-                uniqueID, name, email, password: passwordHash, cpassword: cpasswordHash
-            }
+            const newUser = { uniqueID, name, email, password:passwordHash, cpassword:cpasswordHash }
 
-            console.log(newUser);
+            
+            console.log({newUser});
             const activation_token = createActivationToken(newUser)
+            
+ 
 
             const url = `${CLIENT_URL}/api/activate/${activation_token}`
             sendMail(email, url, "Verify your email address")
@@ -50,7 +51,6 @@ class Login {
 
     }
 
-    // -----------------------------------------------------------------------------------------------------------------------
     // email activateEmail
 
     async activateEmail(req, res) {
@@ -88,6 +88,13 @@ class Login {
             const isMatch = await bcrypt.compare(password, user.password)
             if (!isMatch) return res.status(400).json({ msg: "Password is incorrect." })
 
+            
+            const refresh_token = createRefreshToken({id: user._id})
+            res.cookie('refreshtoken', refresh_token, {
+                httpOnly: true,
+                path: '/user/refresh_token',
+                maxAge: 7*24*60*60*1000 // 7 days
+            })
 
             res.json({ msg: "Login success!" })
         } catch (err) {
@@ -114,7 +121,7 @@ class Login {
     }
 
 // ------------------------------------------------------------------------------------------------------------------------
-    // forget passsword
+   // forget passsword
     async forgotPassword(req, res) {
         try {
             const { email } = req.body
@@ -131,7 +138,7 @@ class Login {
         }
     }
 
-    // reset password
+//     // reset password
     async resetPassword(req, res) {
         try {
             const { password } = req.body
@@ -147,9 +154,9 @@ class Login {
             return res.status(500).json({ msg: err.message })
         }
     }
-    // ----------------------------------------------------------------------------------------------------------------
+//     // ----------------------------------------------------------------------------------------------------------------
 
-    // class end
+//     // class end
 }
 
 
@@ -157,23 +164,23 @@ class Login {
 
 
 
-// email validation
+// // email validation
 function validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
 }
 
-// CREATEACTIVATION TOKEN
+// // CREATEACTIVATION TOKEN
 const createActivationToken = (payload) => {
     return jwt.sign(payload, process.env.ACTIVATION_TOKEN_SECRET, { expiresIn: '5m' })
 }
 
-// createAccessToken TOken
+// // // createAccessToken TOken
 const createAccessToken = (payload) => {
     return jwt.sign(payload, process.env.ACTIVATION_TOKEN_SECRET, { expiresIn: '15m' })
 }
 
-// createRefreshToken 
+// // // createRefreshToken 
 const createRefreshToken = (payload) => {
     return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' })
 }

@@ -1,7 +1,7 @@
 "use strict"
 
 
-const { Registation,getAll_Registation , getId_Registation  }= require('../controllers/Student_Reg.controller');
+const { Registation,getAll_Registation  }= require('../controllers/Student_Reg.controller');
 
 const router = require("express").Router()
 

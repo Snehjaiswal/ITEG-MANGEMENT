@@ -4,6 +4,11 @@ const mongooose = require('mongoose');
 
 
 const registationSchema = new mongooose.Schema({
+    Registation_Id: {
+        type: String,
+        require: true,
+    },
+
     Fname: {
         type: String,
         required: true,
@@ -88,11 +93,12 @@ const registationSchema = new mongooose.Schema({
     date: {
         type: Date,
         default: Date.now
-    }}
-
- 
-
-    )
+    },
+    Role: {
+        type: String,
+        default: "Student"
+    }
+})
 
 // collection creation 
 const Student_Reg = mongooose.model('Student_Reg', registationSchema, "Student_Registration")

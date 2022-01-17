@@ -9,16 +9,17 @@ class registation {
 
     // student post Registation  
     async Registation(req, res) {
-        
-        try {
 
-            const {  Fname, Lname, Dob, Gender, Email, Phone, FatherName, FatherPhone, joinDate, AadharNumber, Branch, parcent_10,
+        try {
+            const Registation_Id  = uuid()
+
+            const { Fname, Lname, Dob, Gender, Email, Phone, FatherName, FatherPhone, joinDate, AadharNumber, Branch, parcent_10,
                 parcent_12, Photo, Marksheet_10, Marksheet_12, certificate_diploma, your_Achiv_certificate, Sport_certificate } = req.body;
-                
-                const Registration_ID = uuid()
-            
-                const St_reg = new Student_Reg({
-                Registration_ID,  Fname, Lname, Dob, Gender, Email, Phone, FatherName, FatherPhone, joinDate, AadharNumber, Branch,
+
+            // console.log({Registration_ID});
+
+            const St_reg = new Student_Reg({
+                Registation_Id, Fname, Lname, Dob, Gender, Email, Phone, FatherName, FatherPhone, joinDate, AadharNumber, Branch,
                 parcent_10, parcent_12, Photo, Marksheet_10, Marksheet_12, certificate_diploma, your_Achiv_certificate, Sport_certificate
             })
 
@@ -28,6 +29,8 @@ class registation {
 
         } catch (err) {
             console.log(err)
+            res.status(400).json({ err });
+
         }
     }
 
@@ -35,7 +38,7 @@ class registation {
     // all student get data
     async getAll_Registation(req, res) {
 
-        const { Registration_ID, Fname, Lname, Dob, Gender, Email, Phone, FatherName, FatherPhone, joinDate, AadharNumber, Branch, parcent_10, parcent_12, Photo, Marksheet_10, Marksheet_12, certificate_diploma, your_Achiv_certificate, Sport_certificate } = req.body;
+        const { uniqRegistation_IdueID, Fname, Lname, Dob, Gender, Email, Phone, FatherName, FatherPhone, joinDate, AadharNumber, Branch, parcent_10, parcent_12, Photo, Marksheet_10, Marksheet_12, certificate_diploma, your_Achiv_certificate, Sport_certificate } = req.body;
 
         try {
             const getRegister = await Student_Reg.find({});

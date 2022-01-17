@@ -23,11 +23,11 @@ const std_LoginSchema = Schema({
     },
     password: {
         type: String,
-        required: [true, "Please enter your password!"]
+        required:true
     },
     cpassword: {
         type: String,
-        required: [true, "Please enter your password!"]
+        required: true
     },
     date: {
         type: Date,
