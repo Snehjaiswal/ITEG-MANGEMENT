@@ -32,6 +32,10 @@ const std_LoginSchema = Schema({
     date: {
         type: Date,
         default:Date.now
+    },
+    Role: {
+        type: String,
+        default: "Student"
     }
 
 

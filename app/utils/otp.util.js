@@ -5,6 +5,8 @@ const bcrypt = require('bcryptjs')
 
 class OTP {
 
+
+
     // otp genetate 
     async generateOTP(email) {
         const otp = Math.floor((Math.random() * 1000000) + 1);
@@ -14,7 +16,7 @@ class OTP {
         const data = ` ${email}.${otp}.${expies}`;
         const hash = await bcrypt.hash(data, 10);
       console.log({data});
-      console.log({hash});
+    //   console.log({hash});
         
         return {
              otp,
@@ -37,7 +39,7 @@ async validateOTP(otp, email, hash) {
         };
     }
     const data = `${email}.${otp}.${expies}`;
-    const isValid = bcrypt.compare(data, fullHash);
+    const isValid = bcrypt.compare(data, hashHash);
 
     if (isValid) {
         return {

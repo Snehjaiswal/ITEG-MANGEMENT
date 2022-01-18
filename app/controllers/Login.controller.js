@@ -4,7 +4,8 @@ const LoginModel = require('../models/Login.model')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const uuid = require("uuid").v4
-const sendMail = require('../controllers/sendEmail')
+
+const sendMail = require('../utils/sendEmail.util')
 
 
 const { CLIENT_URL } = process.env
@@ -34,7 +35,7 @@ class Login {
 
             const newUser = { uniqueID, name, email, password:passwordHash, cpassword:cpasswordHash }
 
-            
+
             console.log({newUser});
             const activation_token = createActivationToken(newUser)
             
