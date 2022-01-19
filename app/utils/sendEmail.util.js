@@ -9,6 +9,9 @@ const { getMaxListeners } = require("../models/Login.model")
 const sendEmail = (to, url, txt) => {
 let transporter = nodemailer.createTransport({
     service:"gmail",
+    host: "ssism@.org",
+    port: 465,
+    secure: true, 
     auth:{
         user:process.env.AUTH_EMAIL,
         pass:process.env.AUTH_PASS
@@ -16,12 +19,11 @@ let transporter = nodemailer.createTransport({
 })
 
 const mailOptions = {
-    from:"kalalsneh@gmail.com" ,
-    to:" hwksneh@gmail.com",
+    from:"ssism@.org",
+    to:to,
     subject: "email verification",
     html: `
    
-    <a href=${url}  display: inline-block;">${txt}</a>
 
     <div>${url}</div>
     </div>

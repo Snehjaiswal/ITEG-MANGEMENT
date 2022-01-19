@@ -67,27 +67,36 @@ const registationSchema = new mongooose.Schema({
 
     },
     parcent_10: {
+        type:String
 
     },
     parcent_12: {
+        type:String
+
 
     },
     Photo: {
+        type:String
 
     },
     Marksheet_10: {
+        type:String
 
     },
     Marksheet_12: {
+        type:String
 
     },
     certificate_diploma: {
+        type:String
 
     },
     your_Achiv_certificate: {
+        type:String
 
     },
     Sport_certificate: {
+        type:String
 
     },
     date: {

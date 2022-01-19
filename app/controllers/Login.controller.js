@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const uuid = require("uuid").v4
 
+
 const sendMail = require('../utils/sendEmail.util')
 
 
@@ -29,8 +30,8 @@ class Login {
             if (password.length < 6)
                 return res.status(400).json({ msg: "Password must be at least 6 characters." })
 
-            const passwordHash = await bcrypt.hash(password, 12)
-            const cpasswordHash = await bcrypt.hash(cpassword, 12)
+            const passwordHash = await bcrypt.hash(password, 10)
+            const cpasswordHash = await bcrypt.hash(cpassword, 10)
 
 
             const newUser = { uniqueID, name, email, password:passwordHash, cpassword:cpasswordHash }
@@ -131,7 +132,7 @@ class Login {
 
             const access_token = createAccessToken({ id: user._id })
             const url = ` ${CLIENT_URL}/api/reset/${access_token}`
-            console.log(url);
+
             sendMail(email, url, "Reset your password")
             res.json({ msg: "Re-send the password, please check your email." })
         } catch (err) {
@@ -141,18 +142,23 @@ class Login {
 
 //     // reset password
     async resetPassword(req, res) {
+        console.log("hi");
         try {
-            const { password } = req.body
-            console.log(password)
-            const passwordHash = await bcrypt.hash(password, 12)
+            const {password , cpassword} = req.body
+            console.log({password ,cpassword})
+            const passwordHash = await bcrypt.hash(password, 10)
+            const cpasswordHash = await bcrypt.hash(cpassword, 10)
 
-            await LoginModel.findOneAndUpdate({ _id: req.user.id }, {
-                password: passwordHash
+
+            await LoginModel.findOneAndUpdate({_id: req.user.id}, {
+                password: passwordHash,
+                cpassword :cpasswordHash
+                
             })
 
-            res.json({ msg: "Password successfully changed!" })
+            res.json({msg: "Password successfully changed!"})
         } catch (err) {
-            return res.status(500).json({ msg: err.message })
+            return res.status(500).json({msg: err.message})
         }
     }
 //     // ----------------------------------------------------------------------------------------------------------------
