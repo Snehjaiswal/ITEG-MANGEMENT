@@ -1,3 +1,9 @@
+/*
+ * Title:   ITEG Management System
+ * Author:     Sneh Jaiswal
+ * Created On: Fri Jan 21 2022 10:51:30 pm
+ */
+
 "use strict"
 
 const { Schema , model} = require('mongoose');

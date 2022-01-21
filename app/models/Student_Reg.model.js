@@ -1,3 +1,9 @@
+/*
+ * Title:   ITEG Management System
+ * Author:     Sneh Jaiswal
+ * Created On: Fri Jan 21 2022 10:51:38 pm
+ */
+
 "use strict"
 
 const mongooose = require('mongoose');
@@ -107,6 +113,9 @@ const registationSchema = new mongooose.Schema({
         type: String,
         default: "Student"
     }
+},
+{
+    timestamps: true
 })
 
 // collection creation 

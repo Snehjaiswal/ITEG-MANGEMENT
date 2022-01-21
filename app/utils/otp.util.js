@@ -1,3 +1,8 @@
+/*
+ * Author:     Sneh Jaiswal
+ * Created On: Fri Jan 21 2022 10:47:59 pm
+ */
+
 "use strict"
 
 const bcrypt = require('bcrypt')
@@ -5,7 +10,7 @@ const bcrypt = require('bcrypt')
 const { } = require('../routes/otp.router')
 
 class OTP {
-    async GenOTP (email){
+    async GenerateOTP (email){
         try {
             const otp = Math.floor((Math.random() * 1000000) + 1);
             const ttl = 5 * 60 * 1000;
@@ -14,13 +19,13 @@ class OTP {
             const data = ` ${email}.${otp}.${expies}`;
 
             const hash = await bcrypt.hash(data, 10);
-            // console.log({hash});
-            const fullhash = `${hash}.${expies}`
+            
+            const fullhash = `${hash}.sj.${expies}`
             
             // console.log({otp,email ,fullhash});
             return{
                 otp,
-                fullhash,
+                hash:fullhash,
             }
             
             
@@ -32,12 +37,12 @@ class OTP {
 
 
     // validation 
-async validateOTP(otp , email , fullhash){
-    console.log({otp, email,fullhash});
+async validateOTP(otp , email , hash){
+   
     try {
      
-        const [ hashvalue,expies] = fullhash.split(".sj.");
-        // console.log({hashvalue});
+        const [hashvalue,expies] = hash.split(".sj.");
+        console.log({hashvalue ,expies});
         const now = Date.now();
         
             if (now > + expies) {
@@ -49,13 +54,19 @@ async validateOTP(otp , email , fullhash){
 
             const data = `${email}.${otp}.${expies}`;
 
-            const isValid = bcrypt.compare(data, hashvalue);
+            const isValid = await bcrypt.compare(data, hashvalue ,function(err, result) {
+                // result == true
+            });
         
-            if (isValid) {
+            if (!/*
+ * Author:     Sneh Jaiswal
+ * Created On: Fri Jan 21 2022 10:47:51 pm
+ */
+isValid) {
                 return {
                     verification: true,
                     msg: "OTP is valid.",
-                };
+                }
             }
             else {
                 return {

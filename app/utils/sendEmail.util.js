@@ -1,3 +1,8 @@
+/*
+ * Author:     Sneh Jaiswal
+ * Created On: Fri Jan 21 2022 10:49:46 pm
+ * Title:   ITEG Management System
+ */
 
 "use strict"
 const {AUTH_EMAIL, AUTH_PASS  } = require("../../config")
@@ -9,7 +14,6 @@ const { getMaxListeners } = require("../models/Login.model")
 const sendEmail = (to, url, txt) => {
 let transporter = nodemailer.createTransport({
     service:"gmail",
-    host: "ssism@.org",
     port: 465,
     secure: true, 
     auth:{
@@ -19,20 +23,22 @@ let transporter = nodemailer.createTransport({
 })
 
 const mailOptions = {
-    from:"ssism@.org",
+    from:process.env.AUTH_EMAIL,
     to:to,
     subject: "email verification",
     html: `
    
 
-    <div>${url}</div>
+    <div>${url}</div>s
     </div>
     `
 }
 
-transporter.sendMail(mailOptions, (err, infor) => {
-    if(err) return err;
-    return infor
+transporter.sendMail(mailOptions)
+.then((response)=>{
+    console.log(response);
+}).catch((error)=>{
+    console.error(error);
 })
 }
 module.exports = sendEmail

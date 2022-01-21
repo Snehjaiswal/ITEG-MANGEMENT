@@ -1,32 +1,44 @@
+/*
+ * Title:   ITEG Management System
+ * Author:     Sneh Jaiswal
+ * Created On: Fri Jan 21 2022 10:51:52 pm
+ */
+
 "use strict"
 
 const router  = require('express').Router()
-const {GenOTP,validateOTP } = require('../utils/otp.util')
+const {GenerateOTP,validateOTP } = require('../utils/otp.util')
 const bcrypt = require('bcryptjs')
 const { verify } = require('jsonwebtoken')
 
 
 
 
-router.post('/generate-otp',genotp)
+router.post('/generate-otp',generateOtp)
 router.post('/verify-otp',verifyotp)
 
 
-function genotp(req,res) {
+async function generateOtp(req,res) {
     // console.log(req.body);
     const {email}=req.body;
-    const { otp , fullhash } = GenOTP(email);
-    res.send({ otp , fullhash});
-    console.log({ otp , fullhash});
+    const { otp , hash } =await GenerateOTP(email);
+    
+    res.send({ otp , hash});
+    console.log({ otp , hash});
 }
 
-function verifyotp(req,res){
+
+
+ 
+async function verifyotp(req,res){
     // console.log(req.body);
-    const {otp , email , fullhash}=req.body;
+    const {otp , email , hash}=req.body;
 
     // console.log({otp , email , hash});
-    const isValid = validateOTP(otp , email , fullhash);
-    console.log({verifyinfi});
+    const output = await validateOTP(otp , email , hash);
+   
+    console.log({output});
+    res.send({output})
 
 
 

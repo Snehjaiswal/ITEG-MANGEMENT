@@ -1,3 +1,9 @@
+/*
+ * Title:   ITEG Management System
+ * Author:     Sneh Jaiswal
+ * Created On: Fri Jan 21 2022 10:50:39 pm
+ */
+
 "use strict"
 
 const LoginModel = require('../models/Login.model')
@@ -35,8 +41,8 @@ async signup(req, res) {
             const passwordHash = await bcrypt.hash(password, 10)
             const cpasswordHash = await bcrypt.hash(cpassword, 10)
 
-
-            const newUser = { uniqueID, name, email, password:passwordHash, cpassword:cpasswordHash }
+            const  saveUser = { uniqueID, name, email,password:passwordHash, cpassword:cpasswordHash}
+            const newUser = { uniqueID, name, email}
 
 
             console.log({newUser});

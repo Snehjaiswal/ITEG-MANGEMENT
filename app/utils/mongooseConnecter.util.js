@@ -1,3 +1,9 @@
+/*
+ * Title:   ITEG Management System
+ * Author:     Sneh Jaiswal
+ * Created On: Fri Jan 21 2022 10:52:04 pm
+ */
+
 "use strict"
 
 const { connect, connection } = require("mongoose")

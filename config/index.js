@@ -1,3 +1,9 @@
+/*
+ * Title:   ITEG Management System
+ * Author:     Sneh Jaiswal
+ * Created On: Fri Jan 21 2022 10:52:18 pm
+ */
+
 "use strict"
 
 require("dotenv").config()
