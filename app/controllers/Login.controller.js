@@ -10,10 +10,12 @@ const sendMail = require('../utils/sendEmail.util')
 
 
 const { CLIENT_URL } = process.env
-class Login {
-    
-//     // student signup information
-    async signup(req, res) {
+
+
+class Login {    
+     
+
+async signup(req, res) {
         const uniqueID = uuid()
         try {
             const { name, email, password, cpassword } = req.body
