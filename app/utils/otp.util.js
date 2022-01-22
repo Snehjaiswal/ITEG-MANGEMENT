@@ -1,6 +1,7 @@
 /*
+ * Title:   ITEG Management System
  * Author:     Sneh Jaiswal
- * Created On: Fri Jan 21 2022 10:47:59 pm
+ * Created On: Fri Jan 21 2022 11:22:50 pm
  */
 
 "use strict"
@@ -12,20 +13,20 @@ const { } = require('../routes/otp.router')
 class OTP {
     async GenerateOTP (email){
         try {
-            const otp = Math.floor((Math.random() * 1000000) + 1);
+            const otp = Math.floor(100000 + Math.random() * 9000000);
             const ttl = 5 * 60 * 1000;
-            const expies = Date.now() + ttl;
+            const expires = Date.now() + ttl;
             
-            const data = ` ${email}.${otp}.${expies}`;
+            const data = ` ${email}.${otp}.${expires}`;
 
             const hash = await bcrypt.hash(data, 10);
             
-            const fullhash = `${hash}.sj.${expies}`
+            const fullhash = `${hash}.sj.${expires}`
             
-            // console.log({otp,email ,fullhash});
+            console.log("Generate OTP >>> ",{otp,email ,fullhash});
             return{
                 otp,
-                hash:fullhash,
+                fullhash,
             }
             
             
@@ -37,32 +38,26 @@ class OTP {
 
 
     // validation 
-async validateOTP(otp , email , hash){
-   
-    try {
-     
-        const [hashvalue,expies] = hash.split(".sj.");
-        console.log({hashvalue ,expies});
+async validateOTP(otp , email , fullhash){
+    
+        const [hashvalue,expires] = fullhash.split(".sj.");
+        // console.log({hashvalue });
+        console.log("validateOTP >>>", {hashvalue, expires})
         const now = Date.now();
         
-            if (now > + expies) {
+            if (now > +expires) {
                 return {
                     verification: false,
                     msg: "OTP expired"
                 };
             }
 
-            const data = `${email}.${otp}.${expies}`;
+            const data = `${email}.${otp}.${expires}`;
 
-            const isValid = await bcrypt.compare(data, hashvalue ,function(err, result) {
-                // result == true
-            });
-        
-            if (!/*
- * Author:     Sneh Jaiswal
- * Created On: Fri Jan 21 2022 10:47:51 pm
- */
-isValid) {
+            const isValid = await bcrypt.compare(data, hashvalue);
+            console.log({isValid})
+     
+            if (isValid) {
                 return {
                     verification: true,
                     msg: "OTP is valid.",
@@ -74,11 +69,7 @@ isValid) {
                     msg: "OTP is Invalid.",
                 };
             }
-        
-    } catch (error) {
-        console.log({error});
-        
-    }
+ 
 }
 }
 

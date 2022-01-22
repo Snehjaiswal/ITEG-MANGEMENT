@@ -16,37 +16,13 @@ class registation {
     async Registation(req, res) {
 
         try {
+        const { Fname, Lname, Dob, Gender, Email, Phone, FatherName, FatherPhone, joinDate, AadharNumber, Branch, parcent_10, parcent_12, Photo, Marksheet_10, Marksheet_12, certificate_diploma, your_Achiv_certificate, Sport_certificate } = req.body
+            
             const Registation_Id  = uuid()
-    
-                const St_reg = new Student_Reg({
-                    Registation_Id,
-                    Fname: req.body.Fname,
-                    Lname: req.body.Lname,
-                    Dob: req.body.Dob,
-                    Gender: req.body.Gender,
-                    Email:req.body.Email,
-                    Phone:req.body.Phone,
-                    FatherName:req.body.FatherName,
-                    FatherPhone:req.body.FatherPhone,
-                    joinDate:req.body.joinDate,
-                    AadharNumber:req.body.AadharNumber,
-                    Branch:req.body.Branch,
-                    parcent_10:req.body.parcent_10,
-                    parcent_12:req.body.parcent_12,
-                    Photo:req.body.Photo,   
-
-                    Marksheet_10:req.body.Marksheet_10,
-                    Marksheet_12:req.body.Marksheet_12,
-                    certificate_diploma:req.body.certificate_diploma,
-                    your_Achiv_certificate:req.body.your_Achiv_certificate,
-                    Sport_certificate:req.body.Sport_certificate,
-                  });
-                  console.log({St_reg});
-
-            // const St_reg = new Student_Reg({
-            //     Registation_Id, Fname, Lname, Dob, Gender, Email, Phone, FatherName, FatherPhone, joinDate, AadharNumber, Branch,
-            //     parcent_10, parcent_12, Photo, Marksheet_10, Marksheet_12, certificate_diploma, your_Achiv_certificate, Sport_certificate
-            // })
+            const St_reg = new Student_Reg({
+                Registation_Id, Fname, Lname, Dob, Gender, Email, Phone, FatherName, FatherPhone, joinDate, AadharNumber, Branch,
+                parcent_10, parcent_12, Photo, Marksheet_10, Marksheet_12, certificate_diploma, your_Achiv_certificate, Sport_certificate
+            })
 
             await St_reg.save();
             res.status(201).json({ message: " registered successfuly" });

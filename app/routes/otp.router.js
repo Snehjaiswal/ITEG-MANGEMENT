@@ -6,44 +6,32 @@
 
 "use strict"
 
-const router  = require('express').Router()
-const {GenerateOTP,validateOTP } = require('../utils/otp.util')
+const router = require('express').Router()
+const { GenerateOTP, validateOTP } = require('../utils/otp.util')
 const bcrypt = require('bcryptjs')
 const { verify } = require('jsonwebtoken')
 
+router.post('/generate-otp', generateOtp)
+router.post('/verify-otp', verifyotp)
 
-
-
-router.post('/generate-otp',generateOtp)
-router.post('/verify-otp',verifyotp)
-
-
-async function generateOtp(req,res) {
+async function generateOtp(req, res) {
     // console.log(req.body);
-    const {email}=req.body;
-    const { otp , hash } =await GenerateOTP(email);
-    
-    res.send({ otp , hash});
-    console.log({ otp , hash});
+    const { email } = req.body;
+    const { otp, fullhash } = await GenerateOTP(email);
+
+    res.send({ otp, fullhash });
+    console.log({ otp, fullhash });
 }
 
-
-
- 
-async function verifyotp(req,res){
+async function verifyotp(req, res) {
     // console.log(req.body);
-    const {otp , email , hash}=req.body;
+    const { otp, email, fullhash } = req.body;
 
     // console.log({otp , email , hash});
-    const output = await validateOTP(otp , email , hash);
-   
-    console.log({output});
-    res.send({output})
+    const output = await validateOTP(otp, email, fullhash);
 
-
-
+    console.log({ output });
+    res.send({ output })
 }
 
-
-
-module.exports= router;
+module.exports = router;
