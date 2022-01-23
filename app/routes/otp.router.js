@@ -4,34 +4,24 @@
  * Created On: Fri Jan 21 2022 10:51:52 pm
  */
 
-"use strict"
+"use strict";
 
-const router = require('express').Router()
-const { GenerateOTP, validateOTP } = require('../utils/otp.util')
-const bcrypt = require('bcryptjs')
-const { verify } = require('jsonwebtoken')
+const router = require("express").Router();
+const otpUtil = require("../utils/otp.util");
 
-router.post('/generate-otp', generateOtp)
-router.post('/verify-otp', verifyotp)
+router.post("/generate-otp", generateOTP);
+router.post("/verify-otp", validateOTP);
 
-async function generateOtp(req, res) {
-    // console.log(req.body);
-    const { email } = req.body;
-    const { otp, fullhash } = await GenerateOTP(email);
-
-    res.send({ otp, fullhash });
-    console.log({ otp, fullhash });
+async function generateOTP(req, res) {
+	const { email } = req.body;
+	const response = await otpUtil.generateOTP(email);
+	res.send(response);
 }
 
-async function verifyotp(req, res) {
-    // console.log(req.body);
-    const { otp, email, fullhash } = req.body;
-
-    // console.log({otp , email , hash});
-    const output = await validateOTP(otp, email, fullhash);
-
-    console.log({ output });
-    res.send({ output })
+async function validateOTP(req, res) {
+	const { email, otp, hash } = req.body;
+	const response = await otpUtil.validateOTP(email, otp, hash);
+	res.send(response);
 }
 
 module.exports = router;

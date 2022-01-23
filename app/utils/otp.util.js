@@ -4,73 +4,61 @@
  * Created On: Fri Jan 21 2022 11:22:50 pm
  */
 
-"use strict"
+"use strict";
 
-const bcrypt = require('bcrypt')
-
-const { } = require('../routes/otp.router')
+const bcrypt = require("bcrypt");
+const MILLISECONDS_PER_MINUTE = 1000 * 60;
 
 class OTP {
-    async GenerateOTP (email){
-        try {
-            const otp = Math.floor(100000 + Math.random() * 9000000);
-            const ttl = 5 * 60 * 1000;
-            const expires = Date.now() + ttl;
-            
-            const data = ` ${email}.${otp}.${expires}`;
+	async generateOTP(email) {
+		try {
+			const otp = Math.floor(100000 + Math.random() * 900000);
+			const ttl = 10 * MILLISECONDS_PER_MINUTE;
+			const expires = Date.now() + ttl;
 
-            const hash = await bcrypt.hash(data, 10);
-            
-            const fullhash = `${hash}.sj.${expires}`
-            
-            console.log("Generate OTP >>> ",{otp,email ,fullhash});
-            return{
-                otp,
-                fullhash,
-            }
-            
-            
-        } catch (error) {
-            console.log({error});
-        }
+			const data = `${email}${otp}${expires}`;
+			const hash = await bcrypt.hash(data, 10);
+			const fullHash = `${hash}.seperator.${expires}`;
+			
+			return {
+				otp: otp,
+				hash: fullHash,
+			};
+		} catch (error) {
+			console.error(error);
+		}
+	}
 
-    }
+	async validateOTP(email, otp, hash) {
+		try {
+			const [hashValue, expires] = hash.split(".seperator.");
+			const now = Date.now();
 
+			if (now > +expires) {
+				return {
+					verification: false,
+					msg: `OTP Expired!`,
+				};
+			}
+			
+			const data = `${email}${otp}${expires}`;
+			const isValid = await bcrypt.compare(data, hashValue);
 
-    // validation 
-async validateOTP(otp , email , fullhash){
-    
-        const [hashvalue,expires] = fullhash.split(".sj.");
-        // console.log({hashvalue });
-        console.log("validateOTP >>>", {hashvalue, expires})
-        const now = Date.now();
-        
-            if (now > +expires) {
-                return {
-                    verification: false,
-                    msg: "OTP expired"
-                };
-            }
+			if (!isValid) {
+				return {
+					verification: false,
+					msg: `OTP is Invalid!`,
+				};
+			}
 
-            const data = `${email}.${otp}.${expires}`;
-
-            const isValid = await bcrypt.compare(data, hashvalue);
-            console.log({isValid})
-     
-            if (isValid) {
-                return {
-                    verification: true,
-                    msg: "OTP is valid.",
-                }
-            }
-            else {
-                return {
-                    verification: false,
-                    msg: "OTP is Invalid.",
-                };
-            }
- 
-}
+			return {
+				verification: true,
+				msg: `OTP is Valid.`,
+			};
+		} catch (error) {
+			console.error(error);
+		}
+	}
 }
 
-module.exports = new OTP()
+module.exports = new OTP();

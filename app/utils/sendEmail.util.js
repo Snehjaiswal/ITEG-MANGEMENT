@@ -29,14 +29,15 @@ const mailOptions = {
     html: `
    
 
-    <div>${url}</div>s
+    <div>${url}</div></br>
+    <p>${txt}</p>
     </div>
     `
 }
 
 transporter.sendMail(mailOptions)
 .then((response)=>{
-    console.log(response);
+    // console.log(response);
 }).catch((error)=>{
     console.error(error);
 })

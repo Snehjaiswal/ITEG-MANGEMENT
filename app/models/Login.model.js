@@ -11,12 +11,12 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 
-const std_LoginSchema = Schema({
+const LoginSchema = Schema({
     uniqueID: {
         type: String,
         require: true,
     },
-    name: {
+    Name: {
         type: String,
         required: [true, "Please enter your name!"],
         trim: true
@@ -50,7 +50,7 @@ const std_LoginSchema = Schema({
 
 
 // collection creation 
-const Std_LoginModel = model('STD_LOGIN', std_LoginSchema,"User Login");
+const LoginModel = model('STD_LOGIN', LoginSchema,"User Login");
 
-module.exports = Std_LoginModel;
+module.exports = LoginModel;
 

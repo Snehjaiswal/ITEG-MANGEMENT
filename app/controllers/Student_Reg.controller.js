@@ -14,11 +14,11 @@ class registation {
 
     // student post Registation  
     async Registation(req, res) {
+        const Registation_Id  = uuid()
 
         try {
         const { Fname, Lname, Dob, Gender, Email, Phone, FatherName, FatherPhone, joinDate, AadharNumber, Branch, parcent_10, parcent_12, Photo, Marksheet_10, Marksheet_12, certificate_diploma, your_Achiv_certificate, Sport_certificate } = req.body
             
-            const Registation_Id  = uuid()
             const St_reg = new Student_Reg({
                 Registation_Id, Fname, Lname, Dob, Gender, Email, Phone, FatherName, FatherPhone, joinDate, AadharNumber, Branch,
                 parcent_10, parcent_12, Photo, Marksheet_10, Marksheet_12, certificate_diploma, your_Achiv_certificate, Sport_certificate
