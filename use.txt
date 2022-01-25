@@ -1,0 +1,18 @@
+try {
+
+            const { email, otp, hash } = req.body;
+
+            const response = await OtpUtil.validateOTP(email, otp, hash);
+           
+            const check = await LoginModel.findOne({ email })
+            if (check) return res.status(400).json({ msg: "This email already exists." })
+
+
+           
+            
+            res.json({ msg: "Account has been activated!" })
+
+        } catch (err) {
+            console.log(err)
+            return res.status(500).json({ msg: err.message })
+        }

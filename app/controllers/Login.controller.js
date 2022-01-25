@@ -37,19 +37,24 @@ class Login {
             const passwordHash = await bcrypt.hash(password, 10)
             const cpasswordHash = await bcrypt.hash(cpassword, 10)
 
-            const newUser = { uniqueID, Name, email, password: passwordHash, cpassword: cpasswordHash }
+            const newUser = new LoginModel({ uniqueID, Name, email, password: passwordHash, cpassword: cpasswordHash, isVerifyed: false })
+            await newUser.save()
+
             console.log({ newUser });
+
+            // It's help Otp generater 
             const { otp, hash } = await OtpUtil.generateOTP(email);
             console.log({ otp, hash });
 
+            const url1 = ` OTP: ${otp} `  //url for email
+            const url2 = `<p>HASH :${hash} </p>`
+            // it's help send mail
+            sendMail(email, url1, url2, "Verify your email address")
 
 
-
-            const url = ` <h1>OTP: ${otp} </h1></br><p>HASH :${hash} </p>`
-            sendMail(email, url, "Verify your email address")
-
-
-            res.json({ msg: "Register Success! Please activate your email to start." })
+            res.json({ 
+                status:"panddig",
+                msg: "Register Success! Please activate your email to start." })
         } catch (err) {
             return res.status(500).json({ msg: err.message })
         }
@@ -57,31 +62,47 @@ class Login {
     }
 
 
-
-    // email activateEmail
+    // ---------------------------------------------------------------------------------------------------------------------
+    // Account activate using Otp
     async activateEmail(req, res) {
         try {
-
             const { email, otp, hash } = req.body;
 
-            const response = await OtpUtil.validateOTP(email, otp, hash);
-            res.send({ msg: response })
+            const [hashValue, expires] = hash.split(".seperator.");
+            const now = Date.now();
+            
+            if (now > +expires) {
+               res.json({
+                    verification: false,
+                    msg: `OTP Expired!`,
+                })
+            }
+            
+            const data = `${email}${otp}${expires}`;
+           
+            //Compare value is true are false 
+            const isValid  = await bcrypt.compare(data, hashValue);
+          
+            if(!isValid) {
+             res.json({ 
+                 msg:"OTP is invalid.",
+                 status:false, 
+                })
+            }else{
+                 res.json({
+                      msg:"OTP is valid.",
+                      status:true,
+                    })
+                
+                const user = await LoginModel.updateOne({ isVerifyed: true })
+               
 
+            }
 
-            const check = await LoginModel.findOne({ email })
-            if (check) return res.status(400).json({ msg: "This email already exists." })
-
-
-            const newUser = { Name, email, password, cpassword }
-            console.log({ newUser });
-            // await newUser.save()
-            // console.log(newUser);
-            res.json({ msg: "Account has been activated!" })
-
-        } catch (err) {
-            console.log(err)
-            return res.status(500).json({ msg: err.message })
+        } catch (error) {
+            console.error(error);
         }
+
     }
 
     // ----------------------------------------------------------------------------------------------------------------------
@@ -89,6 +110,7 @@ class Login {
     async signin(req, res) {
         try {
             const { email, password } = req.body
+            // check if user exist
             const user = await LoginModel.findOne({ email })
             if (!user) return res.status(400).json({ msg: "This email does not exist." })
 
@@ -96,85 +118,13 @@ class Login {
             if (!isMatch) return res.status(400).json({ msg: "Password is incorrect." })
 
 
-            const refresh_token = createRefreshToken({ id: user._id })
-            res.cookie('refreshtoken', refresh_token, {
-                httpOnly: true,
-                path: '/user/refresh_token',
-                maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-            })
 
             res.json({ msg: "Login success!" })
         } catch (err) {
             return res.status(500).json({ msg: err.message })
         }
     }
-
-    // ----------------------------------------------------------------------------------------------
-    //     // get access token
-    //     async getAccessToken(req, res) {
-    //         try {
-    //             const rf_token = req.cookies.refreshtoken
-    //             if (!rf_token) return res.status(400).json({ msg: "Please login now!" })
-
-    //             jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-    //                 if (err) return res.status(400).json({ msg: "Please login now!" })
-
-    //                 const access_token = createAccessToken({ id: user.id })
-    //                 res.json({ access_token })
-    //             })
-    //         } catch (err) {
-    //             return res.status(500).json({ msg: err.message })
-    //         }
-    //     }
-
-    // // ------------------------------------------------------------------------------------------------------------------------
-    //    // forget passsword
-    //     async forgotPassword(req, res) {
-    //         try {
-    //             const { email } = req.body
-    //             const user = await LoginModel.findOne({ email })
-    //             if (!user) return res.status(400).json({ msg: "This email does not exist." })
-
-    //             const access_token = createAccessToken({ id: user._id })
-    //             const url = ` ${CLIENT_URL}/api/reset/${access_token}`
-
-    //             sendMail(email, url, "Reset your password")
-    //             res.json({ msg: "Re-send the password, please check your email." })
-    //         } catch (err) {
-    //             return res.status(500).json({ msg: err.message })
-    //         }
-    //     }
-
-    // //     // reset password
-    //     async resetPassword(req, res) {
-    //         console.log("hi");
-    //         try {
-    //             const {password , cpassword} = req.body
-    //             console.log({password ,cpassword})
-    //             const passwordHash = await bcrypt.hash(password, 10)
-    //             const cpasswordHash = await bcrypt.hash(cpassword, 10)
-
-
-    //             await LoginModel.findOneAndUpdate({_id: req.user.id}, {
-    //                 password: passwordHash,
-    //                 cpassword :cpasswordHash
-
-    //             })
-
-    //             res.json({msg: "Password successfully changed!"})
-    //         } catch (err) {
-    //             return res.status(500).json({msg: err.message})
-    //         }
-    //     }
-    //     // ----------------------------------------------------------------------------------------------------------------
-
-    //     // class end
 }
-
-
-
-
-
 
 // // email validation
 function validateEmail(email) {
@@ -182,19 +132,6 @@ function validateEmail(email) {
     return re.test(email);
 }
 
-// // CREATEACTIVATION TOKEN
-const createActivationToken = (payload) => {
-    return jwt.sign(payload, process.env.ACTIVATION_TOKEN_SECRET, { expiresIn: '5m' })
-}
 
-// // // createAccessToken TOken
-const createAccessToken = (payload) => {
-    return jwt.sign(payload, process.env.ACTIVATION_TOKEN_SECRET, { expiresIn: '15m' })
-}
-
-// // // createRefreshToken 
-const createRefreshToken = (payload) => {
-    return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' })
-}
 
 module.exports = new Login()

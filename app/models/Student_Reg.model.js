@@ -73,52 +73,57 @@ const registationSchema = new mongooose.Schema({
 
     },
     parcent_10: {
-        type:String
+        type: String
 
     },
     parcent_12: {
-        type:String
+        type: String
 
 
     },
     Photo: {
-        type:String
+        type: String
 
     },
     Marksheet_10: {
-        type:String
+        type: String
 
     },
     Marksheet_12: {
-        type:String
+        type: String
 
     },
     certificate_diploma: {
-        type:String
+        type: String
 
     },
     your_Achiv_certificate: {
-        type:String
+        type: String
 
     },
     Sport_certificate: {
-        type:String
+        type: String
 
     },
     date: {
         type: Date,
         default: Date.now
     },
+    isVerifyed:
+    {
+        Boolean: false
+    },
     Role: {
         type: String,
         default: "Student"
     }
 },
-{
-    timestamps: true
-})
+
+    {
+        timestamps: true
+    })
 
 // collection creation 
-const Student_Reg = mongooose.model('Student_Reg', registationSchema, "Student_Registration")
+const Student_Reg = mongooose.model('Student_Reg', registationSchema, "Student Registration")
 
 module.exports = Student_Reg;
