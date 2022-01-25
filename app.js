@@ -40,6 +40,7 @@ app.use('/api/otp',require('./app/routes/otp.router'))
 app.listen(port, () =>
  console.log(`Server is running on http://127.0.0.1:${port}`))
 
-
+// console.log("sneh jaisal");
 //  sneh jaiswal
 // Roshan Yadav
+// suryam yadav
