@@ -19,7 +19,7 @@ class OTP {
 			const data = `${email}${otp}${expires}`;
 			const hash = await bcrypt.hash(data, 10);
 			const fullHash = `${hash}.seperator.${expires}`;
-			
+		
 			return {
 				otp: otp,
 				hash: fullHash,
@@ -29,36 +29,37 @@ class OTP {
 		}
 	}
 
-	async validateOTP(email, otp, hash) {
-		try {
-			const [hashValue, expires] = hash.split(".seperator.");
-			const now = Date.now();
+	// async validateOTP(email, otp, hash) {
+	// 	try {
+	// 		const [hashValue, expires] = hash.split(".seperator.");
+	// 		const now = Date.now();
 
-			if (now > +expires) {
-				return {
-					verification: false,
-					msg: `OTP Expired!`,
-				};
-			}
+	// 		if (now > +expires) {
+	// 			return {
+	// 				verification: false,
+	// 				msg: `OTP Expired!`,
+	// 			};
+	// 		}
 			
-			const data = `${email}${otp}${expires}`;
-			const isValid = await bcrypt.compare(data, hashValue);
+	// 		const data = `${email}${otp}${expires}`;
+	// 		const isValid = await bcrypt.compare(data, hashValue);
 
-			if (!isValid) {
-				return {
-					verification: false,
-					msg: `OTP is Invalid!`,
-				};
-			}
+	// 		if (!isValid) {
+	// 			return {
+	// 				verification: false,
+	// 				msg: `OTP is Invalid!`,
+	// 			};
+	// 		}
 
-			return {
-				verification: true,
-				msg: `OTP is Valid.`,
-			};
-		} catch (error) {
-			console.error(error);
-		}
-	}
+	// 		return {
+	// 			verification: true,
+	// 			msg: `OTP is Valid.`,
+	// 		};
+	// 	} catch (error) {
+	// 		console.error(error);
+	// 	}
+	// }
+
 }
 
 module.exports = new OTP();

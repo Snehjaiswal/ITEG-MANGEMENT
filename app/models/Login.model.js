@@ -6,7 +6,7 @@
 
 "use strict"
 
-const { Schema , model} = require('mongoose');
+const { Schema, model } = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -29,28 +29,28 @@ const LoginSchema = Schema({
     },
     password: {
         type: String,
-        required:true
+        required: true
     },
     cpassword: {
         type: String,
         required: true
     },
-    date: {
-        type: Date,
-        default:Date.now
-    },
+    isVerifyed:Boolean,
     Role: {
         type: String,
         default: "Student"
-    }
+    }    },
+    {
+        timestamps: true
+    },
 
 
-})
+)
 
 
 
 // collection creation 
-const LoginModel = model('STD_LOGIN', LoginSchema,"User Login");
+const LoginModel = model('STD_LOGIN', LoginSchema, "User Login");
 
 module.exports = LoginModel;
 
