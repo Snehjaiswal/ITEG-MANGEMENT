@@ -23,7 +23,7 @@ class OTP {
 		
 			return {
 				otp: otp,
-				hash: fullHash,
+				expires: expires,
 			};
 		} catch (error) {
 			console.error(error);

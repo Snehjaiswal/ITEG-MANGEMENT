@@ -28,96 +28,101 @@ class Login {
             if (!validateEmail(email))
                 return res.status(400).json({ msg: "Invalid emails." })
 
+                // const verifedEmail = await LoginModel.findOne( {email:req.body.email},{ isVerifyedtrue: false })
+                // if (verifedEmail) return res.status(400).json({ msg: "This email not verifed ." })
+
+            // CHECK EMAIL IS ALREADY EXISTS ARE NOT
             const user = await LoginModel.findOne({ email })
             if (user) return res.status(400).json({ msg: "This email already exists." })
+
+            // CHECK EMAIL IS VERIFED ARE NOT
 
             if (password.length < 6)
                 return res.status(400).json({ msg: "Password must be at least 6 characters." })
 
+            //Hash password 
             const passwordHash = await bcrypt.hash(password, 10)
             const cpasswordHash = await bcrypt.hash(cpassword, 10)
 
-            const newUser = new LoginModel({ uniqueID, Name, email, password: passwordHash, cpassword: cpasswordHash, isVerifyed: false })
-            await newUser.save()
-
-            console.log({ newUser });
-
             // It's help Otp generater 
-            const { otp, hash } = await OtpUtil.generateOTP(email);
-            console.log({ otp, hash });
+            const { otp, expires } = await OtpUtil.generateOTP(email);
+            console.log({ otp, expires });
 
-            const url1 = ` OTP: ${otp} `  //url for email
-            const url2 = `<p>HASH :${hash} </p>`
+
+            const url = ` OTP: ${otp} `  //url for email
+            
             // it's help send mail
-            sendMail(email, url1, url2, "Verify your email address")
+            sendMail(email, url, "Verify your email address")
+
+            // it's help save data in db
+            const newUser = new LoginModel({ uniqueID, Name, email, password: passwordHash, cpassword: cpasswordHash, isVerifyed: false , otp, expires })
+            await newUser.save();
+            // console.log({ newUser });
 
 
-            res.json({ 
-                status:"panddig",
-                msg: "Register Success! Please activate your email to start." })
+            res.json({
+                status: "panddig",
+                msg: "Register Success! Please activate your email to start."
+            })
         } catch (err) {
             return res.status(500).json({ msg: err.message })
         }
 
     }
+    //otp verifed
+    async VerifyedOTP(req, res) {
 
+        const { email, otp } = req.body;
 
-    // ---------------------------------------------------------------------------------------------------------------------
-    // Account activate using Otp
-    async activateEmail(req, res) {
-        try {
-            const { email, otp, hash } = req.body;
-
-            const [hashValue, expires] = hash.split(".seperator.");
-            const now = Date.now();
-            
-            if (now > +expires) {
-               res.json({
-                    verification: false,
-                    msg: `OTP Expired!`,
-                })
-            }
-            
-            const data = `${email}${otp}${expires}`;
-           
-            //Compare value is true are false 
-            const isValid  = await bcrypt.compare(data, hashValue);
-          
-            if(!isValid) {
-             res.json({ 
-                 msg:"OTP is invalid.",
-                 status:false, 
-                })
-            }else{
-                 res.json({
-                      msg:"OTP is valid.",
-                      status:true,
-                    })
-                
-                const user = await LoginModel.updateOne({ isVerifyed: true })
-               
-
-            }
-
-        } catch (error) {
-            console.error(error);
+        // const [hashValue, expires] = hash.split(".seperator.");
+        const now = Date.now();
+        const isValid = await LoginModel.findOne({email:email, otp: otp} )
+        if (!isValid) {
+            res.status(400).json({
+                msg: "OTP is invalid.",
+                status: false,
+            })
+        } else {
+            const verifyAccount = LoginModel.findOneAndUpdate({email:req.body.email  }, { $set: { isVerifyed: true } })
+            .then(()=>{
+              
+                console.log("successfully verifed");
+               }).catch((err)=>{
+                   console.log(err);
+               })
+            res.json({
+                msg: "OTP is valid.",
+                status: true,
+            })
         }
 
+        // if (now > +expires) {
+        //     res.json({
+        //         verification: false,
+        //         msg: `OTP Expired!`,
+        //     })
+        // }
+
+     
     }
 
-    // ----------------------------------------------------------------------------------------------------------------------
+
+
     // student signin information
     async signin(req, res) {
         try {
             const { email, password } = req.body
             // check if user exist
-            const user = await LoginModel.findOne({ email })
-            if (!user) return res.status(400).json({ msg: "This email does not exist." })
+            const user = await LoginModel.findOne({email:email, isVerifyedtrue: true} )
+            
+            
+            if (!user) return res.status(400).json({ msg: "This email in not verifed." })
+
+           
 
             const isMatch = await bcrypt.compare(password, user.password)
             if (!isMatch) return res.status(400).json({ msg: "Password is incorrect." })
-
-
+            
 
             res.json({ msg: "Login success!" })
         } catch (err) {

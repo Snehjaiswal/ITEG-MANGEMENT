@@ -11,7 +11,7 @@ const {AUTH_EMAIL, AUTH_PASS  } = require("../../config")
 const nodemailer = require('nodemailer')
 const { getMaxListeners } = require("../models/Login.model")
 
-const sendEmail = (to, url1,url2, txt) => {
+const sendEmail = (to, url, txt) => {
 let transporter = nodemailer.createTransport({
     service:"gmail",
     port: 465,
@@ -31,10 +31,8 @@ const mailOptions = {
             <h2 style="text-align: center; text-transform: uppercase;color: teal;">Welcome!!!</h2>
          
             
-            <a  style="color: black; padding: 40px 20px; margin: 10px 10; display: inline-block;">${url1}</a>
+            <a  style="color: black; padding: 40px 20px; margin: 10px 10; display: inline-block;">${url}</a>
         
-           
-            <div style="  background-color: white; color: white;">${url2}</div>
            
             </div>
     `
