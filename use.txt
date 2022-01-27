@@ -16,3 +16,51 @@ try {
             console.log(err)
             return res.status(500).json({ msg: err.message })
         }
+
+
+
+        
+    // ---------------------------------------------------------------------------------------------------------------------
+    // Account activate using Otp
+    async activateEmail(req, res) {
+        try {
+            const { email, otp, hash } = req.body;
+
+            const [hashValue, expires] = hash.split(".seperator.");
+            const now = Date.now();
+            
+            if (now > +expires) {
+               res.json({
+                    verification: false,
+                    msg: `OTP Expired!`,
+                })
+            }
+            
+            const data = `${email}${otp}${expires}`;
+           
+            //Compare value is true are false 
+            const isValid  = await bcrypt.compare(data, hashValue);
+          
+            if(!isValid) {
+             res.json({ 
+                 msg:"OTP is invalid.",
+                 status:false, 
+                })
+            }else{
+                 res.json({
+                      msg:"OTP is valid.",
+                      status:true,
+                    })
+                
+                const user = await LoginModel.updateOne({ isVerifyed: true })
+               
+
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------------

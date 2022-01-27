@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 // app.use(function (req, res, next) {
 
 //     if (req.body && req.body.formData && typeof req.body.formData == 'string') {
-//         let formData = JSON.parse(req.body.formData)
+//         let formData = JSON.parse(req.body.M )
 
 //         for (var key in formData) {
 //             req.body[key] = formData[key]
@@ -39,8 +39,3 @@ app.use('/api/otp',require('./app/routes/otp.router'))
 
 app.listen(port, () =>
  console.log(`Server is running on http://127.0.0.1:${port}`))
-
-// console.log("sneh jaisal");
-//  sneh jaiswal
-// Roshan Yadav
-// suryam yadav

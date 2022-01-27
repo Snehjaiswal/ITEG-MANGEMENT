@@ -10,6 +10,7 @@ const bcrypt = require("bcrypt");
 const MILLISECONDS_PER_MINUTE = 1000 * 60;
 
 class OTP {
+	// create a function it's help GenerateOTP
 	async generateOTP(email) {
 		try {
 			const otp = Math.floor(100000 + Math.random() * 900000);
@@ -22,7 +23,7 @@ class OTP {
 		
 			return {
 				otp: otp,
-				hash: fullHash,
+				expires: expires,
 			};
 		} catch (error) {
 			console.error(error);

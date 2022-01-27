@@ -35,6 +35,8 @@ const LoginSchema = Schema({
         type: String,
         required: true
     },
+    otp:"",
+    expires:"",
     isVerifyed:Boolean,
     Role: {
         type: String,
