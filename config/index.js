@@ -13,6 +13,8 @@ const config = {
 
 	dbUri: process.env.MONGO_URI,
 	dbName: process.env.MONGO_DB_NAME,
+	fromEmail: process.env.AUTH_EMAIL,
+	fromEmailPassword: process.env.AUTH_PASS
     
 }
 

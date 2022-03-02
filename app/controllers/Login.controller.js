@@ -29,7 +29,6 @@ class Login {
 
             // CHECK EMAIL IS ALREADY EXISTS ARE NOT
             const user = await LoginModel.findOne({ email });
-           
 
             if (user)
                 return res.status(400).json({ msg: "This email already exists." });
@@ -54,7 +53,7 @@ class Login {
             const url = ` OTP: ${otp} `; //url for email
 
             // it's help send mail
-            sendMail(email, url, "Verify your email address");
+            sendMail.sendVerificationMail(email, url, "Verify your email address");
 
             // it's help save data in db
             const newUser = new LoginModel({
