@@ -26,7 +26,7 @@ class registation {
 
             await St_reg.save();
             res.status(201).json({ message: " registered successfuly" });
-            console.log(St_reg);
+            console.log(St_reg); 
 
         } catch (err) {
             console.log(err)

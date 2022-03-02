@@ -31,10 +31,16 @@ app.use(bodyParser.json());
 //     // console.log("Normal Call")
 //     next()
 // })
+app.get('/', (req,res)=>
+    res.send("hi")
+
+)
 
 app.use('/api/login',require('./app/routes/Login.route'))
-app.use('/api/Reg',require('./app/routes/Student_Reg.route'))
 app.use('/api/otp',require('./app/routes/otp.router'))
+app.use('/api/Student_Reg',require('./app/routes/Student_Reg.route'))
+app.use('/api/Teacher_Reg',require('./app/routes/Teacher_Reg.route'))
+
 
 
 app.listen(port, () =>

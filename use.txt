@@ -64,3 +64,178 @@ try {
     }
 
     // ----------------------------------------------------------------------------------------------------------------------
+
+    Signin
+
+     const user = await LoginModel.findOne({email:email, isVerifyedtrue: true} )
+            
+            
+            if (!user) return res.status(400).json({ msg: "This email in not verifed." })
+
+           
+
+            const isMatch = await bcrypt.compare(password, user.password)
+            if (!isMatch) return res.status(400).json({ msg: "Password is incorrect." })
+            
+
+            res.json({ msg: "Login success!" })
+
+
+
+
+
+
+
+try{
+        const { email, password } = req.body
+        // check if user exist
+        const user = await LoginModel.findOne({ email: email })
+        if (!user) return res.status(400).json({ msg: "This email in not verifed." })
+
+
+        LoginModel.find({ email })
+            .then((data) => {
+                if (data.length) {
+                    if (!data[0].isVerifyed) {
+                        res.json({
+                            msg: "Email hasn't been verified"
+                        })
+                    } else {
+                        const isMatch = await bcrypt.compare(password, user.password)
+                        if (!isMatch) return res.status(400).json({ msg: "Password is incorrect." })
+                        res.json({ msg: "Login success!" })
+                    }
+                } catch (err) {
+                    res.json({ msg: err.message })
+                }
+
+
+
+
+// student signin information
+    async signin(req, res) {
+
+        const { email, password } = req.body;
+
+        if (email == "" || password == "") {
+            res.json({
+                status: "FAILED",
+                msg: "Empty credentials supplied",
+            });
+        } else {
+            // check if user exist
+            const User = await LoginModel.find({ email })
+                .then((data) => {
+                  
+                        // check if user eis verified or not
+                        if (!data[0].isVerifyed) {
+                            res.json({
+                                status: "FAILED",
+                                msg: "Email hasen't been verified",
+                            });
+
+                        } else {
+                            const hashedpassword = data[0].password;
+
+                            bcrypt.compare(password, hashedpassword)
+                                .then((result) => {
+
+                                    if (result) {
+                                        // passeord match
+                                        res.json({
+                                            status: "SUCCESS",
+                                            msg: "Signin successful",
+                                            data: data,
+                                        });
+
+                                    } else {
+                                        res.json({
+                                            status: "FAILED",
+                                            msg: "Invalid password enterd!",
+                                        });
+                                    }
+                                })
+
+                                .catch((err) => {
+                                    res.json({
+                                        status: "FAILED",
+                                        msg: "An error occurred while comparing passeord",
+                                    });
+                                })
+                                
+                            }
+                        
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/ const now = Date.now();
+        // if (now > +expires) {
+        //     res.json({
+        //         verification: false,
+        //         msg: `OTP Expired!`,
+        //     })
+        // }
+
+        // find email is exist in db or not
+        const isValid = await LoginModel.find({ email: email, otp: otp })
+        if (!isValid) {
+            res.status(400).json({
+                msg: "OTP is invalid.",
+                status: false,
+            })
+        } else {
+            const verifyAccount = LoginModel.findOneAndUpdate({ email: email }, { $set: { isVerifyed: true } })
+                .then(() => {
+
+                    console.log("successfully verifed");
+                }).catch((err) => {
+                    console.log(err);
+                })
+              
+            res.json({
+                msg: "OTP is valid.",
+                status: "true hai",
+            })
+        }
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------
+
+
+
+        // if (!isValid) {
+        //     res.status(400).json({
+        //         msg: "OTP is invalid.",
+        //         status: false,
+        //     });
+        // } else {
+        //     const verifyAccount = LoginModel.findOneAndUpdate(
+        //         { email: req.body.email },
+        //         { $set: { isVerifyed: true } }
+        //     )
+        //         .then(() => {
+        //             console.log("successfully verifed");
+        //         })
+        //         .catch((err) => {
+        //             console.log(err);
+        //         });
+        //     res.json({
+        //         msg: "OTP is valid.",
+        //         status: true,
+        //     });
+        // }
+
+        // const now = Date.now();
+        // if (now > +expires) {
+        //     res.json({
+        //         verification: false,
+        //         msg: `OTP Expired!`,
+        //     })
+        // }
+
+
+
+

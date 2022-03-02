@@ -1,8 +1,9 @@
 /*
  * Title:   ITEG Management System
  * Author:     Sneh Jaiswal
- * Created On: Fri Jan 21 2022 10:51:38 pm
+ * Created On: Tue Mar 01 2022 8:41:47 pm
  */
+
 
 "use strict"
 
@@ -14,98 +15,57 @@ const registationSchema = new mongooose.Schema({
         type: String,
         require: true,
     },
-
-    Fname: {
+    // Teacher full name
+    Fullname: {
         type: String,
         required: true,
         trim: true
-
-    },
-    Lname: {
-        type: String,
-        required: true,
-        trim: true
-
-    },
-    Dob: {
-        type: Date
-        // required:true
 
     },
     Gender: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
+    DOB: {
+    },
+
     Email: {
         type: String,
         required: true,
         unique: true,
         trim: true
     },
-    
     Phone: {
         type: Number,
         required: true,
         trim: true
     },
-    FatherName: {
+    Address: {
         type: String,
         required: true,
         trim: true
 
     },
-    FatherPhone: {
-        type: Number,
-        required: true,
-        trim: true
-    },
-    joinDate: {
+    join_Date: {
         type: Date
 
     },
-    AadharNumber: {
-        type: Number,
+    Post: {
+        type: String
+    },
+    Language_skill: {
+        type: String,
         required: true,
-        unique: true,
         trim: true
-
     },
-    Branch: {
-
+    Project_Work_Skill: {
+        type: String,
+        required: true,
+        trim: true
     },
-    parcent_10: {
+    Add_Image: {
         type: String
-
-    },
-    parcent_12: {
-        type: String
-
-
-    },
-    // Student Profile
-    Photo: {
-        type: String
-
-    },
-    Marksheet_10: {
-        type: String
-
-    },
-    Marksheet_12: {
-        type: String
-
-    },
-    certificate_diploma: {
-        type: String
-
-    },
-    your_Achiv_certificate: {
-        type: String
-
-    },
-    Sport_certificate: {
-        type: String
-
     },
     date: {
         type: Date,
@@ -126,6 +86,6 @@ const registationSchema = new mongooose.Schema({
     })
 
 // collection creation 
-const Student_Reg = mongooose.model('Student_Reg', registationSchema, "Student Registration")
+const Teacher_Reg = mongooose.model('Teacher_Reg', registationSchema, "Teacher Registration")
 
-module.exports = Student_Reg;
+module.exports = Teacher_Reg;
