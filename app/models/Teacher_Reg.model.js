@@ -77,7 +77,7 @@ const registationSchema = new mongooose.Schema({
     },
     Role: {
         type: String,
-        default: "Student"
+        default: "Teacher"
     }
 },
 

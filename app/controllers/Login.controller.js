@@ -8,7 +8,7 @@
 
 const LoginModel = require("../models/Login.model");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 const uuid = require("uuid").v4;
 
 const sendMail = require("../utils/sendEmail.util");
@@ -20,18 +20,21 @@ class Login {
         try {
             const { Name, email, password, cpassword } = req.body;
 
+            // CHECK ALL FIELD IN FILL
             if (!Name || !email || !password || !cpassword)
                 return res.status(400).json({ msg: "Please fill in all fields." });
 
+
+            // EMAIL VALIDATER
             if (!validateEmail(email))
                 return res.status(400).json({ msg: "Invalid emails." });
 
 
             // CHECK EMAIL IS ALREADY EXISTS ARE NOT
             const user = await LoginModel.findOne({ email });
-
             if (user)
                 return res.status(400).json({ msg: "This email already exists." });
+
 
             // CHECK EMAIL IS VERIFED ARE NOT
 
@@ -66,6 +69,8 @@ class Login {
                 otp,
                 expires,
             });
+
+            //STORE YOUR LOGIN DATA IN DB 
             await newUser.save();
             console.log({ newUser });
 
@@ -73,6 +78,7 @@ class Login {
                 status: "panddig",
                 msg: "Register Success! Please activate your email to start.",
             });
+
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
@@ -82,6 +88,7 @@ class Login {
     //otp verifed
     async VerifyedOTP(req, res) {
         const { email, otp } = req.body;
+
 
         const isValid = await LoginModel.findOne({ email: email });
         // console.log({ isValid });
@@ -96,8 +103,10 @@ class Login {
             })
         }
 
+
         if (otp === isValid.otp) {
             res.status(200).json({ msg: "Otp is Corect" });
+
             const verifyAccount = LoginModel.findOneAndUpdate({ email: email }, { $set: { isVerifyed: true } })
                 .then(() => {
 
@@ -111,23 +120,26 @@ class Login {
         }
 
     }
-// ------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------
     // student signin information
     async signin(req, res) {
         try {
             const { email, password } = req.body;
+
             // check if user exist
-            const user = await LoginModel.findOne({ email: email  });
-                 if (!user)
-                 return res.status(400).json({ msg: "This email in not verifed." });
+            const user = await LoginModel.findone({ email: email});
+            // if (!user)
+            //     return res.status(400).json({ msg: "This email in not verifed." });
+               console.log(user);
 
-               
-                
-                 const isMatch = await bcrypt.compare(password, user.password);
-                 if (!isMatch)
-                 return res.status(400).json({ msg: "Password is incorrect." });
+            
 
-                 res.json({ msg: "Login success!" });
+
+            const isMatch = await bcrypt.compare(password, user.password);
+            if (!isMatch)
+                return res.status(400).json({ msg: "Password is incorrect." });
+
+            res.json({ msg: "Login success!" });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
