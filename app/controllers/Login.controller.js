@@ -14,6 +14,7 @@ const uuid = require("uuid").v4;
 const sendMail = require("../utils/sendEmail.util");
 const OtpUtil = require("../utils/otp.util")
 
+// LOGIN CLASS
 class Login {
     async signup(req, res) {
         const uniqueID = uuid();
@@ -32,6 +33,8 @@ class Login {
 
             // CHECK EMAIL IS ALREADY EXISTS ARE NOT
             const user = await LoginModel.findOne({ email });
+
+            
             if (user)
                 return res.status(400).json({ msg: "This email already exists." });
 
@@ -127,12 +130,19 @@ class Login {
             const { email, password } = req.body;
 
             // check if user exist
-            const user = await LoginModel.findone({ email: email});
-            // if (!user)
-            //     return res.status(400).json({ msg: "This email in not verifed." });
-               console.log(user);
+            const user = await LoginModel.findOne({
+                $and: [
+                    { email: email },
+                    { isVerifyed: true }
+                ]
+            });
 
-            
+            //  CHECK EMAIL IS VALID OR NOT
+            if (!user)
+            return res.status(400).json({ msg: "This email in not Verified." });
+
+
+
 
 
             const isMatch = await bcrypt.compare(password, user.password);
