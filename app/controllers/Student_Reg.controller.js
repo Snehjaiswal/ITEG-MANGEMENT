@@ -36,7 +36,7 @@ class registation {
 
 
     // Show Student list Data 
-    async Show_List(req, res) {
+    async Show_List(req, res,next) {
         try {
            const result= await Student_Reg.find()
 

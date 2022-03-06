@@ -14,7 +14,7 @@ const router = require("express").Router()
 
 router.post("/Registation", Registation )
 
-router.get("/Show_List", Show_List)
+router.get("/List", Show_List)
 
 
 // its basic 
