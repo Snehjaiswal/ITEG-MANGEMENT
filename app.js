@@ -9,13 +9,13 @@ require('./app/utils/mongooseConnecter.util')
 const express = require("express")
 const app = express()
 const bodyParser = require('body-parser');
-
+const cors = require("cors");
 
 const { port } = require("./config")
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+app.use(cors());
 // app.use(express.json())
 // app.use(function (req, res, next) {
 
@@ -36,10 +36,12 @@ app.get('/', (req,res)=>
 
 )
 
+// Routes Or API's
 app.use('/api/login',require('./app/routes/Login.route'))
 app.use('/api/otp',require('./app/routes/otp.router'))
 app.use('/api/Student_Reg',require('./app/routes/Student_Reg.route'))
 app.use('/api/Teacher_Reg',require('./app/routes/Teacher_Reg.route'))
+
 
 
 

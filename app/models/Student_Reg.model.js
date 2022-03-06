@@ -13,28 +13,56 @@ const registationSchema = new mongooose.Schema({
     Registation_Id: {
         type: String,
         require: true,
+        unique:true
+    },
+    Profile: {
+        type: String
+
     },
 
-    Fname: {
+    FirstName: {
         type: String,
         required: true,
         trim: true
 
     },
-    Lname: {
+    LastName: {
         type: String,
         required: true,
         trim: true
 
     },
+
     Dob: {
         type: Date
-        // required:true
+       
 
     },
     Gender: {
         type: String,
-        required: true
+       
+    },
+    FatherName: {
+        type: String,
+     
+        trim: true
+
+    },
+    MotherName: {
+        type: String,
+        required: true,
+        trim: true
+
+    },
+    MobileNo: {
+        type: Number,
+        required: true,
+        trim: true
+    },
+    FatherContact: {
+        type: Number,
+        required: true,
+        trim: true
     },
     Email: {
         type: String,
@@ -42,64 +70,46 @@ const registationSchema = new mongooose.Schema({
         unique: true,
         trim: true
     },
-    
-    Phone: {
-        type: Number,
-        required: true,
-        trim: true
-    },
-    FatherName: {
-        type: String,
-        required: true,
-        trim: true
-
-    },
-    FatherPhone: {
-        type: Number,
-        required: true,
-        trim: true
-    },
     joinDate: {
         type: Date
 
     },
-    AadharNumber: {
-        type: Number,
-        required: true,
+    EnrollmentNo: {
+        type: String,
         unique: true,
         trim: true
-
     },
-    Branch: {
-
+    PermanentAddress: {
+        type: String,
+        required: true
     },
-    parcent_10: {
+    ResidentialAddress: {
         type: String
-
     },
-    parcent_12: {
-        type: String
-
-
+    FatherOccupation : {
+        type:String
     },
+    Course: {
+        type:String
+    },
+//     Qualification_10th :{
+//         Board:[] ,
+//         percentage : [],
+//         PassinngYear:[]
+// },
+// Qualification_12th :{
+//     Board:[] ,
+//     percentage : [],
+//     PassinngYear:[]
+//     },
+
     // Student Profile
-    Photo: {
+    
+    Marksheet_10th: {
         type: String
 
     },
-    Marksheet_10: {
-        type: String
-
-    },
-    Marksheet_12: {
-        type: String
-
-    },
-    certificate_diploma: {
-        type: String
-
-    },
-    your_Achiv_certificate: {
+    Marksheet_12th: {
         type: String
 
     },
@@ -107,14 +117,36 @@ const registationSchema = new mongooose.Schema({
         type: String
 
     },
+    certificate_diploma: {
+        type: String
+        
+    },
+    AadharNumber: {
+        type: String
+
+    },
+    SVS: {
+        type: String
+
+    },
+    SNS: {
+        type: String
+
+    }, 
+    Gaon_Ki_Beti: {
+        type: String
+
+    },
+    Post_Matrix: {
+        type: String
+
+    },
+
     date: {
         type: Date,
         default: Date.now
     },
-    isVerifyed:
-    {
-        Boolean: false
-    },
+
     Role: {
         type: String,
         default: "Student"

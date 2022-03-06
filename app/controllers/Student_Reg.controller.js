@@ -14,19 +14,18 @@ class registation {
 
     // student post Registation  
     async Registation(req, res) {
-        const Registation_Id  = uuid()
+        const Registation_Id = uuid()
 
-        try {
-        const { Fname, Lname, Dob, Gender, Email, Phone, FatherName, FatherPhone, joinDate, AadharNumber, Branch, parcent_10, parcent_12, Photo, Marksheet_10, Marksheet_12, certificate_diploma, your_Achiv_certificate, Sport_certificate } = req.body
-            
+        try { 
+            const { Profile, FirstName, LastName, Dob, Gender, FatherContact, MobileNo, FatherName, MotherName, Email, joinDate, EnrollmentNo, PermanentAddress, ResidentialAddress, FatherOccupation, Course, Marksheet_10th, Marksheet_12th,  Sport_certificate,certificate_diploma, AadharNumber, SVS, SNS, Gaon_Ki_Beti, Post_Matrix } = req.body
+
             const St_reg = new Student_Reg({
-                Registation_Id, Fname, Lname, Dob, Gender, Email, Phone, FatherName, FatherPhone, joinDate, AadharNumber, Branch,
-                parcent_10, parcent_12, Photo, Marksheet_10, Marksheet_12, certificate_diploma, your_Achiv_certificate, Sport_certificate
+                Registation_Id, Profile,FirstName, LastName, Dob, Gender, FatherContact, MobileNo, FatherName, MotherName, Email, joinDate, EnrollmentNo, PermanentAddress, ResidentialAddress, FatherOccupation, Course, Marksheet_10th, Marksheet_12th,  Sport_certificate,certificate_diploma, AadharNumber, SVS, SNS, Gaon_Ki_Beti, Post_Matrix 
             })
-
+            
             await St_reg.save();
             res.status(201).json({ message: " registered successfuly" });
-            console.log(St_reg); 
+            console.log(St_reg);
 
         } catch (err) {
             console.log(err)
@@ -36,21 +35,21 @@ class registation {
     }
 
 
-    // all student get data
-    async getAll_Registation(req, res) {
-
-        const { uniqRegistation_IdueID, Fname, Lname, Dob, Gender, Email, Phone, FatherName, FatherPhone, joinDate, AadharNumber, Branch, parcent_10, parcent_12, Photo, Marksheet_10, Marksheet_12, certificate_diploma, your_Achiv_certificate, Sport_certificate } = req.body;
-
+    // Show Student list Data 
+    async Show_List(req, res) {
         try {
-            const getRegister = await Student_Reg.find({});
-            res.send(getRegister);
-            console.log(getRegister);
+           const result= await Student_Reg.find()
 
-        } catch (err) {
-            console.log
-            (err);
+            res.status(200).json({
+                data: result,
+                message: "list data"
+            })
         }
-   
+        catch (err) {
+            res.status(400).send(err);
+            console.log(err);
+        }
+
     }
 
 

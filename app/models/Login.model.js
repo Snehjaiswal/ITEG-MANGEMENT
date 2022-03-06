@@ -48,11 +48,22 @@ const LoginSchema = Schema({
 
 
 )
+// LoginSchema.indexes();
 
 
+// LoginSchema.createIndex(
+//     { creationDate: 1 },
+//     { expireAfterSeconds: 300, partialFilterExpression: { isVerifyed: { $eq: false } } },function(err, data){
+//         console.log(err);
+//         console.log(data);
+//        });
 
 // collection creation 
-const LoginModel = model('STD_LOGIN', LoginSchema, "User Login");
+const LoginModel = model('LOGIN', LoginSchema, "User Login");
+
+
+
+
 
 module.exports = LoginModel;
 

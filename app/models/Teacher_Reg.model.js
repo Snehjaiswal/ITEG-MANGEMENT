@@ -59,11 +59,8 @@ const registationSchema = new mongooose.Schema({
         required: true,
         trim: true
     },
-    Project_Work_Skill: {
-        type: String,
-        required: true,
-        trim: true
-    },
+    Project_Work_Skill: [String],
+
     Add_Image: {
         type: String
     },

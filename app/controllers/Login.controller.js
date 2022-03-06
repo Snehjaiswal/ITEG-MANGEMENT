@@ -34,6 +34,8 @@ class Login {
             // CHECK EMAIL IS ALREADY EXISTS ARE NOT
             const user = await LoginModel.findOne({ email });
 
+            // TTL INDEX USE
+ 
             
             if (user)
                 return res.status(400).json({ msg: "This email already exists." });
@@ -141,19 +143,61 @@ class Login {
             if (!user)
             return res.status(400).json({ msg: "This email in not Verified." });
 
-
-
-
-
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch)
                 return res.status(400).json({ msg: "Password is incorrect." });
 
             res.json({ msg: "Login success!" });
+            console.log(`Login Success!`);
+            
+          
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
     }
+
+    // FORGET PASSWORD
+    async Forgot_Password(req,res){
+
+        try {
+            const { email } = req.body;
+            const user = await LoginModel.findOne({
+                $and: [
+                    { email: email },
+                    { isVerifyed: true }
+                ]
+            });
+            if (!user)
+            return res.status(400).json({ msg: "This email in not Verified." });
+
+            const { otp, expires } = await OtpUtil.generateOTP(email);
+            // console.log({ otp, expires })
+
+            const url = ` OTP: ${otp} `; //url for email
+
+            // it's help send mail
+            sendMail.sendVerificationMail(email, url, "Verify your email address");
+            console.log("OTP SEND");
+
+
+        } catch (err) {
+            return res.status(500).json({ msg: err.message });
+            console.log(err);
+        }
+
+    } 
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 // // email validation
