@@ -17,10 +17,10 @@ class registation {
         const Registation_Id = uuid()
 
         try { 
-            const { Profile, FirstName, LastName, Dob, Gender, FatherContact, MobileNo, FatherName, MotherName, Email, joinDate, EnrollmentNo, PermanentAddress, ResidentialAddress, FatherOccupation, Course, Marksheet_10th, Marksheet_12th,  Sport_certificate,certificate_diploma, AadharNumber, SVS, SNS, Gaon_Ki_Beti, Post_Matrix } = req.body
+            const { Profile, FirstName, LastName, Dob, Gender, FatherContact, MobileNo, FatherName, MotherName, Email, joinDate, EnrollmentNo, PermanentAddress, ResidentialAddress, FatherOccupation, Course,Leval, Marksheet_10th, Marksheet_12th,  Sport_certificate,certificate_diploma, AadharNumber, SVS, SNS, Gaon_Ki_Beti, Post_Matrix } = req.body
 
             const St_reg = new Student_Reg({
-                Registation_Id, Profile,FirstName, LastName, Dob, Gender, FatherContact, MobileNo, FatherName, MotherName, Email, joinDate, EnrollmentNo, PermanentAddress, ResidentialAddress, FatherOccupation, Course, Marksheet_10th, Marksheet_12th,  Sport_certificate,certificate_diploma, AadharNumber, SVS, SNS, Gaon_Ki_Beti, Post_Matrix 
+                Registation_Id, Profile,FirstName, LastName, Dob, Gender, FatherContact, MobileNo, FatherName, MotherName, Email, joinDate, EnrollmentNo, PermanentAddress, ResidentialAddress, FatherOccupation, Course,Leval, Marksheet_10th, Marksheet_12th,  Sport_certificate,certificate_diploma, AadharNumber, SVS, SNS, Gaon_Ki_Beti, Post_Matrix 
             })
             
             await St_reg.save();

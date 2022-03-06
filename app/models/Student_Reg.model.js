@@ -92,6 +92,9 @@ const registationSchema = new mongooose.Schema({
     Course: {
         type:String
     },
+    Leval : {
+        type : String
+    },
 //     Qualification_10th :{
 //         Board:[] ,
 //         percentage : [],
