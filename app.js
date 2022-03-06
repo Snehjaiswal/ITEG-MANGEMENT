@@ -44,6 +44,5 @@ app.use('/api/Teacher_Reg',require('./app/routes/Teacher_Reg.route'))
 
 
 
-
 app.listen(port, () =>
  console.log(`Server is running on http://127.0.0.1:${port}`))
