@@ -54,11 +54,8 @@ const registationSchema = new mongooose.Schema({
     Post: {
         type: String
     },
-    Language_skill: {
-        type: String,
-        required: true,
-        trim: true
-    },
+    Language_skill: [ String ],
+    
     Project_Work_Skill: [String],
 
     Add_Image: {

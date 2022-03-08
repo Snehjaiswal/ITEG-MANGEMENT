@@ -37,22 +37,54 @@ class registation {
     }
 
 
-    // all student get data
-    async getAll_Registation(req, res) {
 
-        const { Registation_Id,Fullname, Gender, DOB, Email, Phone, Address, join_Date, Post, Language_skill, Project_Work_Skill, Add_Image } = req.body;
-
+    // Teacherr show list
+    async Show_List(req, res,next) {
         try {
-            const getRegister = await Teacher_Reg.find({});
-            res.send(getRegister);
-            console.log(getRegister);
+           const result= await Teacher_Reg.find()
 
-        } catch (err) {
-            console.log
-            (err);
+            res.status(200).json({
+                data: result,
+                message: "list data"
+            })
         }
-   
+        catch (err) {
+            res.status(400).send(err);
+            console.log(err);
+        }
+
     }
+
+     // Search in Teacherr table
+     async Search(req, res) {
+        try {
+       
+                await Teacher_Reg.find({
+                  $or: [
+                    { "Fullname": { $regex:req.params.key}},
+                    //  { "Phone": { $regex: req.params.key } },
+                    { "Email": { $regex: req.params.key } },
+                    { "Post": { $regex: req.params.key } },
+                    { "Address": { $regex: req.params.key } },
+                  ],
+                })
+            .then((result) => {console.log();
+                        res.status(200).json({
+                          search_data: result,
+                          message: "list data was search successfully",
+                        });
+                      })
+                      .catch((err) => {
+                        res.status(400).send(err);
+                      });
+        } catch (err) {
+            res.send(err);
+            console.log(err);
+
+        }
+    }
+
+
 
 
 }

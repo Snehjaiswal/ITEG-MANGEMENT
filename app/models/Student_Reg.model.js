@@ -96,15 +96,15 @@ const registationSchema = new mongooose.Schema({
         type : String
     },
 //     Qualification_10th :{
-//         Board:[] ,
-//         percentage : [],
-//         PassinngYear:[]
-// },
-// Qualification_12th :{
-//     Board:[] ,
-//     percentage : [],
-//     PassinngYear:[]
-//     },
+    //         Board:[] ,
+    //         percentage : [],
+    //         PassinngYear:[]
+    // },
+    // Qualification_12th :{
+    //     Board:[] ,
+    //     percentage : [],
+    //     PassinngYear:[]
+    //     },
 
     // Student Profile
     

@@ -7,7 +7,7 @@
 "use strict"
 
 
-const { Registation,Show_List }= require('../controllers/Student_Reg.controller');
+const { Registation,Show_List,Search }= require('../controllers/Student_Reg.controller');
 
 const router = require("express").Router()
 
@@ -15,6 +15,9 @@ const router = require("express").Router()
 router.post("/Registation", Registation )
 
 router.get("/List", Show_List)
+
+router.get("/Search/:key", Search)
+
 
 
 // its basic 
