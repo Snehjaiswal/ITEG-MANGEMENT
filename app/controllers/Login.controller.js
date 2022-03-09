@@ -35,8 +35,8 @@ class Login {
             const user = await LoginModel.findOne({ email });
 
             // TTL INDEX USE
- 
-            
+
+
             if (user)
                 return res.status(400).json({ msg: "This email already exists." });
 
@@ -141,7 +141,7 @@ class Login {
 
             //  CHECK EMAIL IS VALID OR NOT
             if (!user)
-            return res.status(400).json({ msg: "This email in not Verified." });
+                return res.status(400).json({ msg: "This email in not Verified." });
 
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch)
@@ -149,15 +149,15 @@ class Login {
 
             res.json({ msg: "Login success!" });
             console.log(`Login Success!`);
-            
-          
+
+
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
     }
 
     // FORGET PASSWORD
-    async Forgot_Password(req,res){
+    async Forgot_Password(req, res) {
 
         try {
             const { email } = req.body;
@@ -168,10 +168,10 @@ class Login {
                 ]
             });
             if (!user)
-            return res.status(400).json({ msg: "This email in not Verified." });
+                return res.status(400).json({ msg: "This email in not Verified." });
 
             const { otp, expires } = await OtpUtil.generateOTP(email);
-            // console.log({ otp, expires })
+            console.log({ otp, expires })
 
             const url = ` OTP: ${otp} `; //url for email
 
@@ -179,13 +179,34 @@ class Login {
             sendMail.sendVerificationMail(email, url, "Verify your email address");
             console.log("OTP SEND");
 
+            const updateOtp = LoginModel.updateMany({ email: email }, { $set: { otp: otp }} ,{expires:expires}, function (err, docs) {
+                if (err){
+                    console.log(err)
+                }
+                else{
+                    console.log("Updated Docs : ", docs);
+                }
+            }  )
+                .then(() => {
 
-        } catch (err) {
-            return res.status(500).json({ msg: err.message });
-            console.log(err);
-        }
+                console.log("successfully verifed");
+            }).catch((err) => {
+                console.log(err);
+            })
 
-    } 
+        // // Verify otp
+        // const VerifyOtp = await VerifyedOTP(otp);
+        // console.log(verifyOtp);
+
+
+
+
+    } catch(err) {
+        return res.status(500).json({ msg: err.message });
+        console.log(err);
+    }
+
+}
 
 
 
