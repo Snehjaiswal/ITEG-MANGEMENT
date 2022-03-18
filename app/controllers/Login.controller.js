@@ -179,34 +179,34 @@ class Login {
             sendMail.sendVerificationMail(email, url, "Verify your email address");
             console.log("OTP SEND");
 
-            const updateOtp = LoginModel.updateMany({ email: email }, { $set: { otp: otp }} ,{expires:expires}, function (err, docs) {
-                if (err){
+            const updateOtp = LoginModel.updateMany({ email: email }, { $set: { otp: otp } }, { expires: expires }, function (err, docs) {
+                if (err) {
                     console.log(err)
                 }
-                else{
+                else {
                     console.log("Updated Docs : ", docs);
                 }
-            }  )
+            })
                 .then(() => {
 
-                console.log("successfully verifed");
-            }).catch((err) => {
-                console.log(err);
-            })
+                    console.log("successfully verifed");
+                }).catch((err) => {
+                    console.log(err);
+                })
 
-        // // Verify otp
-        // const VerifyOtp = await VerifyedOTP(otp);
-        // console.log(verifyOtp);
-
-
+            // // Verify otp
+            // const VerifyOtp = await VerifyedOTP(otp);
+            // console.log(verifyOtp);
 
 
-    } catch(err) {
-        return res.status(500).json({ msg: err.message });
-        console.log(err);
+
+
+        } catch (err) {
+            return res.status(500).json({ msg: err.message });
+            console.log(err);
+        }
+
     }
-
-}
 
 
 
