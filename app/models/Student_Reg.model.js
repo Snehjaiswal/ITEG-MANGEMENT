@@ -4,98 +4,89 @@
  * Created On: Fri Jan 21 2022 10:51:38 pm
  */
 
-"use strict"
+"use strict";
 
-const mongooose = require('mongoose');
+const mongooose = require("mongoose");
 
-
-const registationSchema = new mongooose.Schema({
+const registationSchema = new mongooose.Schema(
+  {
     Registation_Id: {
-        type: String,
-        require: true,
-        unique:true
+      type: String,
+      require: true,
+      unique: true,
     },
     Profile: {
-        type: String
-
+      type: String,
     },
 
     FirstName: {
-        type: String,
-        required: true,
-        trim: true
-
+      type: String,
+      required: true,
+      trim: true,
     },
     LastName: {
-        type: String,
-        required: true,
-        trim: true
-
+      type: String,
+      required: true,
+      trim: true,
     },
 
     Dob: {
-        type: Date
-       
-
+      type: Date,
     },
     Gender: {
-        type: String,
-       
+      type: String,
     },
     FatherName: {
-        type: String,
-     
-        trim: true
+      type: String,
 
+      trim: true,
     },
     MotherName: {
-        type: String,
-        required: true,
-        trim: true
-
+      type: String,
+      required: true,
+      trim: true,
     },
     MobileNo: {
-        type: Number,
-        required: true,
-        trim: true
+      type: Number,
+      required: true,
+      trim: true,
     },
     FatherContact: {
-        type: Number,
-        required: true,
-        trim: true
+      type: Number,
+      required: true,
+      trim: true,
     },
     Email: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
     },
     joinDate: {
-        type: Date
-
+      type: Date,
     },
     EnrollmentNo: {
-        type: String,
-        unique: true,
-        trim: true
+      type: String,
+      unique: true,
+      trim: true,
     },
     PermanentAddress: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     ResidentialAddress: {
-        type: String
+      type: String,
     },
-    FatherOccupation : {
-        type:String
+    FatherOccupation: {
+      type: String,
     },
     Course: {
-        type:String
+      type: String,
     },
-    Leval : {
-        type : String
+    Leval: {
+      type: String,
     },
-//     Qualification_10th :{
+    //     Qualification_10th :{
     //         Board:[] ,
     //         percentage : [],
     //         PassinngYear:[]
@@ -107,60 +98,56 @@ const registationSchema = new mongooose.Schema({
     //     },
 
     // Student Profile
-    
-    Marksheet_10th: {
-        type: String
 
+    Marksheet_10th: {
+      type: String,
     },
     Marksheet_12th: {
-        type: String
-
+      type: String,
     },
     Sport_certificate: {
-        type: String
-
+      type: String,
     },
     certificate_diploma: {
-        type: String
-        
+      type: String,
     },
     AadharNumber: {
-        type: String
-
+      type: String,
     },
     SVS: {
-        type: String
-
+      type: String,
     },
     SNS: {
-        type: String
-
-    }, 
+      type: String,
+    },
     Gaon_Ki_Beti: {
-        type: String
-
+      type: String,
     },
     Post_Matrix: {
-        type: String
-
+      type: String,
     },
 
     date: {
-        type: Date,
-        default: Date.now
+      type: Date,
+      default: Date.now,
     },
 
     Role: {
-        type: String,
-        default: "Student"
-    }
-},
+      type: String,
+      default: "Student",
+    },
+  },
 
-    {
-        timestamps: true
-    })
+  {
+    timestamps: true,
+  }
+);
 
-// collection creation 
-const Student_Reg = mongooose.model('Student_Reg', registationSchema, "Student Registration")
+// collection creation
+const Student_Reg = mongooose.model(
+  "Student_Reg",
+  registationSchema,
+  "Student Registration"
+);
 
 module.exports = Student_Reg;

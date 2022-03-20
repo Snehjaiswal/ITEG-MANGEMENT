@@ -83,7 +83,7 @@ class Login {
         }
     }
     
-    
+
     //otp verifed
     async VerifyedOTP(req, res) {
         const { email, otp } = req.body;
@@ -119,7 +119,7 @@ class Login {
         }
 
     }
-    // ------------------------------------------------------------------------------------------------------------------------
+    
     // student signin information
     async signin(req, res) {
         try {
@@ -191,8 +191,6 @@ class Login {
             // // Verify otp
             // const VerifyOtp = await VerifyedOTP(otp);
             // console.log(verifyOtp);
-
-
 
 
         } catch (err) {
