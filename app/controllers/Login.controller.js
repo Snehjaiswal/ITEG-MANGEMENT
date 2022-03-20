@@ -35,14 +35,8 @@ class Login {
             const user = await LoginModel.findOne({ email });
 
             // TTL INDEX USE
-
-
             if (user)
                 return res.status(400).json({ msg: "This email already exists." });
-
-
-            // CHECK EMAIL IS VERIFED ARE NOT
-
 
             // CHECK PASSWORD LENGTH
             if (password.length < 6)
@@ -88,8 +82,8 @@ class Login {
             return res.status(500).json({ msg: err.message });
         }
     }
-    // ----------------------------------------------------------------------------------------------------------------------
-
+    
+    
     //otp verifed
     async VerifyedOTP(req, res) {
         const { email, otp } = req.body;
