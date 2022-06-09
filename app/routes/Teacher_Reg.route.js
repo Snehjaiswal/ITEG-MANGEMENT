@@ -12,7 +12,6 @@ const { Registation,Show_List ,Search  }= require('../controllers/Teacher_Reg.co
 
 const router = require("express").Router()
 
-
 router.post("/Registation", Registation )
 
 router.get("/List", Show_List)
