@@ -2,4 +2,6 @@ node_modules
 .env
 /.env
 imp
-package-lock.json
+
+
+/package-lock.json
